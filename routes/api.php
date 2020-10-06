@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\VaultController;
+use App\Http\Resources\Vault as VaultResource;
+use App\Models\Vault;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +25,14 @@ Route::get('ping', function () {
     return response()->json(['pong']);
 });
 
-Route::apiResources([VaultController::class]);
+//Route::apiResources('vault', [VaultController::class]);
 
-//Route::get('vault/{id}', [VaultController::class, 'show']);
+Route::prefix('v1')->group(function () {
+    Route::get('vault/{vault:owner}', function (Vault $vault){
+        return new VaultResource($vault);
+    });
+
+    Route::get('vaults', function (Request $request) {
+            return VaultResource::collection(Vault::all());
+    });
+});
