@@ -17,8 +17,8 @@ class CreateVaultsTable extends Migration
             $table->id();
             $table->string('owner');
             $table->float('totalValue');
-            $table->float('cash');
-            $table->float('digital');
+            $table->float('cashValue');
+            $table->float('digitalValue');
             $table->string('currentCurrency');
             $table->string('currencyCode');
             $table->timestamps();

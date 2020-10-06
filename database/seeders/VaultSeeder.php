@@ -13,6 +13,6 @@ class VaultSeeder extends Seeder
      */
     public function run()
     {
-        //
+        \App\Models\Vault::factory(10)->create();
     }
 }

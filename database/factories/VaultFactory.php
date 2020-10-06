@@ -21,11 +21,14 @@ class VaultFactory extends Factory
      */
     public function definition()
     {
+        $cash = mt_rand(1, 10000) + (mt_rand() / mt_getrandmax());
+        $digital = mt_rand(1, 10000) + (mt_rand() / mt_getrandmax());
+
         return [
             'owner' => $this->faker->name,
-            'totalValue' => 0.0,
-            'cash' => 0.0,
-            'digital' => 0.0,
+            'totalValue' => $cash + $digital,
+            'cashValue' => $cash,
+            'digitalValue' => $digital,
             'currentCurrency' => 'US Dollars',
             'currencyCode' => 'USD',
         ];
