@@ -64,7 +64,13 @@ class VaultController extends Controller
         $converter = new CurrencyConverter($provider);
 
         if ($request->currency !== $vault->currencyCode) {
-            $converter->convert($amount, $vault->currencyCode, RoundingMode::DOWN);
+            $amount = $converter->convert($amount, $vault->currencyCode, RoundingMode::DOWN);
+        }
+
+        if ($request->type === 'cash') {
+            $vault->cashValue = Money::of($vault->cashValue, $vault->currencyCode)->plus($amount)->getAmount();
+        } if ($request->type === 'digital') {
+            $vault->digitalValue = Money::of($vault->digitalValue, $vault->currencyCode)->plus($amount)->getAmount();
         }
 
         $vault->totalValue = $amount->plus($vault->totalValue)->getAmount();
