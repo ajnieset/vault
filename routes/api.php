@@ -35,4 +35,6 @@ Route::prefix('v1')->group(function () {
     Route::get('vaults', function (Request $request) {
             return VaultResource::collection(Vault::all());
     });
+
+    Route::post('deposit/{vault:owner}', [VaultController::class, 'update']);
 });

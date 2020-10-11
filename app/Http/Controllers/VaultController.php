@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vault;
+use App\Http\Resources\Vault as VaultResource;
+use Brick\Math\RoundingMode;
+use Brick\Money\CurrencyConverter;
+use Brick\Money\ExchangeRateProvider\ConfigurableProvider;
+use Brick\Money\Money;
 use Illuminate\Http\Request;
 
 class VaultController extends Controller
@@ -48,7 +53,24 @@ class VaultController extends Controller
      */
     public function update(Request $request, Vault $vault)
     {
-        //
+        $amount = Money::of($request->amount, $request->currency);
+
+        //setup exchange rate provider
+        //TODO: change to db table
+        $provider = new ConfigurableProvider();
+        $provider->setExchangeRate('EUR', 'USD', '1.18');
+        $provider->setExchangeRate('EUR', 'GBP', '0.9');
+
+        $converter = new CurrencyConverter($provider);
+
+        if ($request->currency !== $vault->currencyCode) {
+            $converter->convert($amount, $vault->currencyCode, RoundingMode::DOWN);
+        }
+
+        $vault->totalValue = $amount->plus($vault->totalValue)->getAmount();
+        $vault->save();
+
+        return new VaultResource($vault);
     }
 
     /**
