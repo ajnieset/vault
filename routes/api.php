@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\VaultController;
-use App\Http\Resources\Vault as VaultResource;
-use App\Models\Vault;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,13 +26,9 @@ Route::get('ping', function () {
 //Route::apiResources('vault', [VaultController::class]);
 
 Route::prefix('v1')->group(function () {
-    Route::get('vault/{vault:owner}', function (Vault $vault){
-        return new VaultResource($vault);
-    });
+    Route::get('vault/{vault:username}', [VaultController::class, 'show']);
 
-    Route::get('vaults', function (Request $request) {
-            return VaultResource::collection(Vault::all());
-    });
+    Route::get('vaults', [VaultController::class, 'index']);
 
-    Route::post('deposit/{vault:owner}', [VaultController::class, 'update']);
+    Route::post('deposit/{vault:username}', [VaultController::class, 'update']);
 });

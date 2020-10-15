@@ -19,7 +19,7 @@ class VaultController extends Controller
      */
     public function index()
     {
-        //
+        return VaultResource::collection(Vault::all());
     }
 
     /**
@@ -41,7 +41,7 @@ class VaultController extends Controller
      */
     public function show(Vault $vault)
     {
-        //
+        return new VaultResource($vault);
     }
 
     /**
