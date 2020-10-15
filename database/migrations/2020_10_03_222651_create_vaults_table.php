@@ -16,6 +16,7 @@ class CreateVaultsTable extends Migration
         Schema::create('vaults', function (Blueprint $table) {
             $table->id();
             $table->string('owner');
+            $table->string('username');
             $table->float('totalValue');
             $table->float('cashValue');
             $table->float('digitalValue');
